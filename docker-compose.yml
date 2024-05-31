@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass123
+      POSTGRES_DB: tatedb
+    networks:
+      - taatee
+
+  test-db:
+    image: postgres:13
+    ports:
+      - "5435:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass123
+      POSTGRES_DB: tatedb
+    networks:
+      - taatee
+
+networks:
+  taatee:
+    driver: bridge
