@@ -17,7 +17,7 @@ import { SeederService } from './seeder/seeder.service';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'ep-bold-hall-a4mwxvra.us-east-1.pg.koyeb.app',
-      port: 5434,
+      // port: 5434,
       username: 'koyeb-adm', // update me
       password: 'NAyc6pHSZU2s',
       database: 'koyebdb',
