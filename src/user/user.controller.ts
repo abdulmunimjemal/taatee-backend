@@ -1,5 +1,15 @@
 // user/user.controller.ts
-import { Controller, Get, Param, UseGuards, Request, Patch, Body, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  UseGuards,
+  Request,
+  Patch,
+  Body,
+  Delete,
+  Post,
+} from '@nestjs/common';
 import { JwtGuard } from '../auth/guard/jwt.guard'; // Import the JwtAuthGuard
 import { RoleGuard } from '../auth/guard/';
 import { UpdateUserDto } from './dto/';
@@ -12,16 +22,16 @@ import { BookingService } from '../booking/booking.service';
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly bookingService: BookingService
-    ) {}
+    private readonly bookingService: BookingService,
+  ) {}
 
-    @Get('all')
-    @UseGuards(JwtGuard, RoleGuard)
-    @Roles(Role.Admin)
-    getAll() {
-      return this.userService.getAllUsers();
-    }
-    
+  @Get('all')
+  @UseGuards(JwtGuard, RoleGuard)
+  @Roles(Role.Admin)
+  getAll() {
+    return this.userService.getAllUsers();
+  }
+
   @Get()
   @UseGuards(JwtGuard)
   getSelf(@Request() req) {
@@ -30,13 +40,11 @@ export class UserController {
     let result = this.userService.findOne(id);
     return result;
   }
-  
-  @Get("booking")
+
+  @Get('booking')
   @UseGuards(JwtGuard)
-  async getUserBookings(
-    @Request() request
-  ) {
-    const user = await request.user
+  async getUserBookings(@Request() request) {
+    const user = await request.user;
     return this.bookingService.getAllBookingsForUser(user);
   }
 
@@ -65,11 +73,11 @@ export class UserController {
   @UseGuards(JwtGuard, RoleGuard)
   @Roles(Role.Admin)
   async getBookings(@Param('id') userId: number) {
-    const user = await this.userService.findOne(userId)
-    return this.bookingService.getAllBookingsForUser(user)
+    const user = await this.userService.findOne(userId);
+    return this.bookingService.getAllBookingsForUser(user);
   }
 
-  @Patch("")
+  @Patch('')
   @UseGuards(JwtGuard)
   updateProfile(@Request() req, @Body() updateUserDto: UpdateUserDto) {
     const user = req.user;
@@ -80,16 +88,16 @@ export class UserController {
   @Patch(':id')
   @UseGuards(JwtGuard, RoleGuard)
   @Roles(Role.Admin)
-   updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
-        return this.userService.updateUser(id, updateUserDto);
-    }
+  updateUser(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.updateUser(id, updateUserDto);
+  }
 
   @Delete(':id')
   @UseGuards(JwtGuard, RoleGuard)
   @Roles(Role.Admin)
   deleteUser(@Param('id') id: number) {
-        return this.userService.remove(id);
-    }
+    return this.userService.remove(id);
+  }
 
   @Delete('')
   @UseGuards(JwtGuard)
@@ -99,5 +107,4 @@ export class UserController {
     let result = this.userService.remove(id);
     return result;
   }
-
 }

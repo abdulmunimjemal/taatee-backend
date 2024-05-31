@@ -9,7 +9,11 @@ import { jwtConfig } from './auth/jwt/jwt.config';
 import { SeederService } from './seeder/seeder.service';
 
 @Module({
-  imports: [AuthModule, UserModule, EventModule, BookingModule,
+  imports: [
+    AuthModule,
+    UserModule,
+    EventModule,
+    BookingModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'ep-bold-hall-a4mwxvra.us-east-1.pg.koyeb.app',
@@ -19,10 +23,16 @@ import { SeederService } from './seeder/seeder.service';
       database: 'koyebdb',
       entities: [__dirname + '/**/entities/*.entity.ts'], // pattern
       autoLoadEntities: true,
-      ssl: 'true',
+      synchronize: true,
+      ssl: true,
+      extra: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
     }),
     JwtModule.register(jwtConfig),
   ],
- providers: [SeederService],
+  providers: [SeederService],
 })
 export class AppModule {}
