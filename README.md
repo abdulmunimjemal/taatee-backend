@@ -1,73 +1,154 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# API Documentation
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Auth Controller
+**Base URL**: `/auth`
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+### 1. Sign Up
+- **Endpoint**: `POST /auth/signup`
+- **Description**: Registers a new user.
+- **Request Body**: `SignupDto`
+  - `email` (string, required): User's email address.
+  - `password` (string, required): User's password.
+  - `firstName` (string, required): User's first name.
+  - `lastName` (string, required): User's last name.
+  - `role` (Role, optional): User's role.
+- **Response**: Returns registration details.
 
-## Description
+### 2. Sign In
+- **Endpoint**: `POST /auth/signin`
+- **Description**: Authenticates a user and returns a token.
+- **Request Body**: `SigninDto`
+  - `email` (string, required): User's email address.
+  - `password` (string, required): User's password.
+- **Response**: Returns authentication token and user details.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### 3. Validate Token
+- **Endpoint**: `POST /auth/validate`
+- **Description**: Validates an authentication token.
+- **Request Body**: `{ "token": "user's token" }`
+- **Response**: Returns validation status and user details if valid.
 
-## Installation
+## Booking Controller
+**Base URL**: `/booking`
 
-```bash
-$ yarn install
-```
+### 1. Get All Bookings
+- **Endpoint**: `GET /booking`
+- **Description**: Retrieves all bookings. Access restricted to admin roles.
+- **Response**: Array of `Booking`.
 
-## Running the app
+### 2. Get Booking by ID
+- **Endpoint**: `GET /booking/:id`
+- **Description**: Retrieves a specific booking by ID.
+- **Request Parameters**: `id` (number, required): Booking ID.
+- **Response**: Returns details of the specified booking.
 
-```bash
-# development
-$ yarn run start
+### 3. Delete Booking
+- **Endpoint**: `DELETE /booking/:id`
+- **Description**: Deletes a specific booking. Verification required.
+- **Request Parameters**: `id` (number, required): Booking ID.
+- **Response**: Confirmation of deletion.
 
-# watch mode
-$ yarn run start:dev
+## Event Controller
+**Base URL**: `/event`
 
-# production mode
-$ yarn run start:prod
-```
+### 1. Get All Events
+- **Endpoint**: `GET /event`
+- **Description**: Retrieves all events.
+- **Response**: Array of event details.
 
-## Test
+### 2. Get Event by ID
+- **Endpoint**: `GET /event/:id`
+- **Description**: Retrieves specific event details.
+- **Request Parameters**: `id` (number, required): Event ID.
+- **Response**: Event details.
 
-```bash
-# unit tests
-$ yarn run test
+### 3. Create Event
+- **Endpoint**: `POST /event`
+- **Description**: Creates a new event. Admin only.
+- **Request Body**: `EventDto`
+  - `eventName` (string, required)
+  - `eventDate` (Date, required)
+  - `description` (string, required)
+  - `location` (string, required)
+  - `isCanceled` (boolean, optional)
+  - `maxBooking` (number, optional)
+- **Response**: Details of the created event.
 
-# e2e tests
-$ yarn run test:e2e
+### 4. Update Event
+- **Endpoint**: `PATCH /event/:id`
+- **Description**: Updates an existing event. Admin only.
+- **Request Parameters**: `id` (number, required): Event ID.
+- **Request Body**: `UpdateEventDto`
+- **Response**: Updated event details.
 
-# test coverage
-$ yarn run test:cov
-```
+### 5. Delete Event
+- **Endpoint**: `DELETE /event/:id`
+- **Description**: Deletes a specific event. Admin only.
+- **Request Parameters**: `id` (number, required): Event ID.
+- **Response**: Confirmation of deletion.
 
-## Support
+## User Controller
+**Base URL**: `/user`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 1. Get All Users
+- **Endpoint**: `GET /user/all`
+- **Description**: Retrieves all users. Admin only.
+- **Response**: Array of user details.
 
-## Stay in touch
+### 2. Get User by ID
+- **Endpoint**: `GET /user/:id`
+- **Description**: Retrieves details of a specific user. Admin only.
+- **Request Parameters**: `id` (number, required): User ID.
+- **Response**: User details.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 3. Update User
+- **Endpoint**: `PATCH /user/:id`
+- **Description**: Updates a specific user's details. Admin only.
+- **Request Parameters**: `id` (number, required): User ID.
+- **Request Body**: `UpdateUserDto`
+- **Response**: Updated user details.
 
-## License
+### 4. Delete User
+- **Endpoint**: `DELETE /user/:id`
+- **Description**: Deletes a specific user. Admin only.
+- **Request Parameters**: `id` (number, required): User ID.
+- **Response**: Confirmation of user deletion.
 
-Nest is [MIT licensed](LICENSE).
+### 5. Get User's Own Profile
+- **Endpoint**: `GET /user`
+- **Description**: Retrieves the profile information of the logged-in user.
+- **Response**: User details of the logged-in user.
+
+### 6. Update User's Own Profile
+- **Endpoint**: `PATCH /user`
+- **Description**: Updates the profile of the logged-in user.
+- **Request Body**: `UpdateUserDto`
+- **Response**: Updated details of the logged-in user.
+
+### 7. Delete User's Own Profile
+- **Endpoint**: `DELETE /user`
+- **Description**: Deletes the profile of the logged-in user.
+- **Response**: Confirmation of deletion of the logged-in user's profile.
+
+### 8. Promote User
+- **Endpoint**: `POST /user/:id/promote`
+- **Description**: Promotes the user to a higher role. Admin only.
+- **Request Parameters**: `id` (number, required): User ID.
+- **Response**: Confirmation of user promotion.
+
+### 9. Demote User
+- **Endpoint**: `POST /user/:id/demote`
+- **Description**: Demotes the user to a lower role. Admin only.
+- **Request Parameters**: `id` (number, required): User ID.
+- **Response**: Confirmation of user demotion.
+
+### 10. Get User's Bookings
+- **Endpoint**: `GET /user/booking`
+- **Description**: Retrieves all bookings associated with the logged-in user.
+- **Response**: Array of bookings for the logged-in user.
+
+### 11. Get Bookings by User ID
+- **Endpoint**: `GET /user/:id/booking`
+- **Description**: Retrieves all bookings associated with a specific user. Admin only.
+- **Request Parameters**: `id` (number, required): User ID.
+- **Response**: Array of bookings for the specified user.
