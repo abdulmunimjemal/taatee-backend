@@ -52,7 +52,6 @@ export class UserService {
                 numberOfbookings: user.bookings.length,
                 bookings: undefined,
                 password: undefined,
-                id: undefined,
             };
         });
     
